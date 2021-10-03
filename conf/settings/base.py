@@ -33,10 +33,12 @@ ALLOWED_HOSTS = []
 PROJECT_APPS= [
     'apps.users',
     'apps.movies',
+    'apps.restapi',
 ]
 
 PROJECT_LIBRARIES =[
     'rest_framework',
+    'rest_framework_swagger',
 ]
 
 INSTALLED_APPS = [
@@ -46,7 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-] + PROJECT_APPS
+] + PROJECT_APPS + PROJECT_LIBRARIES
 
 
 MIDDLEWARE = [
@@ -137,3 +139,7 @@ MEDIA_ROOT= (os.path.join(Path(__file__).resolve().parent.parent.parent, "media"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL= 'users.CustomUser'
+
+REST_FRAMEWORK= {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+}
