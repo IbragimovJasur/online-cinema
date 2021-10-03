@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import CustomUserCreateView, CustomUserUpdateView, MovieListCreateView, MovieRetrieveView, MovieUpdateDeleteView, RateMovieCreateView
+from .views import CustomUserRegistrationView, CustomUserUpdateView, MovieListCreateView, MovieRetrieveView, MovieUpdateDeleteView, RateMovieCreateView
 from rest_framework_swagger.views import get_swagger_view
+
 
 schema_view= get_swagger_view(title='API Swagger')
 
@@ -9,7 +10,8 @@ urlpatterns= [
     path('swagger/', schema_view),
     
     #users
-    path('user/create/', CustomUserCreateView.as_view(), name='custom_user_create'),
+    path('user/register/', CustomUserRegistrationView.as_view(), name='custom_user_create'),
+
     path('user/update/<int:pk>/', CustomUserUpdateView.as_view(), name='custom_user_update'),
 
     #movies

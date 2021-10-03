@@ -1,3 +1,4 @@
+import decimal
 from django.db import models
 from django.conf import settings
 
@@ -33,13 +34,16 @@ class Movie(models.Model):
         "Actors who starred in the film", max_length=150, null=False, blank=False)
     description= models.TextField("Detailed information about film")
     video= models.FileField(
-        "Video content of film", upload_to= get_img_upload_path, null=False, blank=False) #file directory
+        "Video content of film", upload_to= get_img_upload_path, null=False, blank=False)
     type= models.CharField(
         "Type of film", choices=TYPE_CHOICES, max_length=50, null=False, blank=False)
     uploaded_to_platform_in= models.DateTimeField(auto_now_add=True)
+    rating_of_film= models.FloatField(max_length=1, default=0.0)
+    num_rated_users= models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
+        
 
 class Rating(models.Model):
     VERY_BAD= 1
@@ -59,9 +63,7 @@ class Rating(models.Model):
     rated_by= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reviews', null=True, blank=True)
     movie= models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='ratings')
     rate= models.PositiveSmallIntegerField(choices=RATING_CHOICES, null=False, blank=False)
-    rating_of_film= models.IntegerField(default=0)
     opinion= models.TextField(null=True, blank=True)
-    num_rated_users= models.IntegerField(default=0)
 
     def __str__(self):
-        return self.movie.name
+        return self.rated_by.username
