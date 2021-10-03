@@ -39,6 +39,7 @@ PROJECT_APPS= [
 PROJECT_LIBRARIES =[
     'rest_framework',
     'rest_framework_swagger',
+    'rest_framework.authtoken',
 ]
 
 INSTALLED_APPS = [
@@ -142,4 +143,9 @@ AUTH_USER_MODEL= 'users.CustomUser'
 
 REST_FRAMEWORK= {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
 }
