@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListCreateAPIView, RetrieveAPIView, GenericAPIView
+from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from apps.users.models import CustomUser
 from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
 from apps.users.serializers import CustomUserRegistrationSerializer
@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+
 
 #built permission classes
 class IsProfileOwner(BasePermission):
@@ -22,13 +23,13 @@ class IsOwner(BasePermission):
 
 #users
 class CustomUserRegistrationView(CreateAPIView):
-    permission_classes= [AllowAny] #is not auth
+    permission_classes= [AllowAny] 
     queryset= CustomUser.objects.all()
     serializer_class= CustomUserRegistrationSerializer
     
 
 class CustomUserUpdateView(RetrieveUpdateAPIView):
-    permission_classes= [IsAuthenticated, IsProfileOwner]
+    permission_classes= [IsAuthenticated, IsOwner]
     queryset= CustomUser.objects.all()
     serializer_class= CustomUserRegistrationSerializer
 
@@ -55,36 +56,10 @@ class MovieRetrieveView(RetrieveAPIView):
     serializer_class= MovieSerializer
 
 
-class MovieUpdateDeleteView(APIView):
+class MovieUpdateDeleteView(RetrieveUpdateDestroyAPIView):
     permission_classes= [IsOwner]
     queryset= Movie.objects.all()
-    serializers_class= MovieSerializer
-
-    def get_object(self, pk):
-        try:
-            return Movie.objects.get(pk=pk)
-        except Movie.DoesNotExist:
-            raise HTTP_404_NOT_FOUND
-
-    def get(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        serializer = MovieSerializer(snippet)
-        return Response(serializer.data, status= HTTP_200_OK)
-
-    def put(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        serializer = MovieSerializer(snippet, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status= HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk, format=None):
-        snippet = self.get_object(pk)
-        snippet.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
+    serializer_class= MovieSerializer
 
 class RateMovieCreateView(CreateAPIView):
     permission_classes= [IsAuthenticated]
