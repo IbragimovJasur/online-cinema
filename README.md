@@ -1,0 +1,1 @@
+The project is created for watching movies/serials online. It's created in DRF. API of the project is implemented. Available features are user authentication, and create/rate/comment under/watch movies and serials.
