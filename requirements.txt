@@ -1,0 +1,4 @@
+Django==3.2.3
+django-rest-swagger==2.2.0
+djangorestframework==3.12.4
+Pillow==8.2.0

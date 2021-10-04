@@ -22,3 +22,4 @@ class CustomUserRegistrationSerializer(serializers.ModelSerializer):
         except KeyError:
             pass
         return user
+        

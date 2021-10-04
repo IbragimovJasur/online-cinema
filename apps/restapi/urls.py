@@ -1,5 +1,13 @@
 from django.urls import path
-from .views import CustomUserRegistrationView, CustomUserUpdateView, MovieListCreateView, MovieRetrieveView, MovieUpdateDeleteView, RateMovieCreateView
+from .views import (
+    CustomUserRegistrationView, 
+    CustomUserUpdateView, 
+    MovieListCreateView,
+    MovieRetrieveView, 
+    MovieUpdateDeleteView, 
+    RateMovieCreateView
+)
+
 from rest_framework_swagger.views import get_swagger_view
 
 
@@ -11,7 +19,6 @@ urlpatterns= [
     
     #users
     path('user/register/', CustomUserRegistrationView.as_view(), name='custom_user_create'),
-
     path('user/update/<int:pk>/', CustomUserUpdateView.as_view(), name='custom_user_update'),
 
     #movies

@@ -1,5 +1,5 @@
 from rest_framework import status
-from rest_framework.generics import CreateAPIView, RetrieveUpdateAPIView, ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveAPIView, RetrieveUpdateDestroyAPIView
 from apps.users.models import CustomUser
 from rest_framework.permissions import AllowAny, BasePermission, IsAuthenticated
 from apps.users.serializers import CustomUserRegistrationSerializer
@@ -28,7 +28,7 @@ class CustomUserRegistrationView(CreateAPIView):
     serializer_class= CustomUserRegistrationSerializer
     
 
-class CustomUserUpdateView(RetrieveUpdateAPIView):
+class CustomUserUpdateView(RetrieveUpdateDestroyAPIView):
     permission_classes= [IsAuthenticated, IsOwner]
     queryset= CustomUser.objects.all()
     serializer_class= CustomUserRegistrationSerializer
