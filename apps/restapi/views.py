@@ -73,14 +73,14 @@ class RateMovieCreateView(CreateAPIView):
 
         if serializer.is_valid():
             try: #if user already rated the film
-                rating_info= request.user.reviews.get(movie= rated_movie)   #search movie from user's rated films
+                rating_info= request.user.reviews.get(movie= rated_movie)
                 old_total= round(rated_movie.rating_of_film * rated_movie.num_rated_users, 1)
                 old_total_without_users_rate= old_total - rating_info.rate
                 new_total= old_total_without_users_rate + serializer.data.get('rate')
                 rated_movie.rating_of_film= round(new_total / rated_movie.num_rated_users, 1)
                 rated_movie.save()
                 
-                #update rate and opinion about that film
+                #update rate and opinion of user about that film
                 rating_info.rate= serializer.data.get('rate')
                 rating_info.opinion= serializer.data.get('opinion')
                 rating_info.save()
@@ -88,6 +88,7 @@ class RateMovieCreateView(CreateAPIView):
                 return Response(serializer.data, status= HTTP_200_OK)
             
             except: #if user is rating film for the first time
+                #create rating model for user with this film
                 new_rated_movie= Rating.objects.create(
                     rated_by= request.user,
                     movie= rated_movie,
@@ -96,6 +97,7 @@ class RateMovieCreateView(CreateAPIView):
                 )
                 new_rated_movie.save()
                 
+                #if user is the first person rating film
                 if rated_movie.num_rated_users == 0:
                     rated_movie.rating_of_film = serializer.data.get('rate')
                     rated_movie.num_rated_users += 1
